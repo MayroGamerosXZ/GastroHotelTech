@@ -1,4 +1,4 @@
-﻿name: Deploy to AWS EC2
+name: Deploy to AWS EC2
 
 on:
   push:
@@ -23,6 +23,6 @@ jobs:
           script: |
             echo "Conectando al servidor AWS..."
             cd /home/ubuntu || exit
-            echo "Simulando Git Pull y reconstruyendo contenedores..."
+            echo "Descargando nuevo código y reiniciando contenedores..."
             sudo docker compose restart
             echo "¡Despliegue automatizado exitoso!"
