@@ -277,6 +277,7 @@ p {
   }
   .mobile-pos-layout {
     flex-direction: column !important;
+    height: auto !important;
   }
   .mobile-pos-sidebar {
     width: 100% !important;
@@ -298,6 +299,7 @@ p {
   }
   .mobile-pos-grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+    overflow-y: visible !important;
   }
 }
 

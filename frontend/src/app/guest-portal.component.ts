@@ -209,7 +209,7 @@ import { Capacitor } from '@capacitor/core';
     </ng-container>
 
     <!-- MODAL 1: REGISTRO DE CUENTA DE HUÉSPED (Email + Contraseña) -->
-    <div *ngIf="showRegisterModal" style="position: absolute; inset:0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+    <div *ngIf="showRegisterModal" style="position: fixed; inset:0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
       <div class="glass-panel" style="padding: 2.5rem; width: 450px; max-height: 90vh; overflow-y: auto;">
         <h2 style="margin-bottom: 0.25rem; color: #f59e0b;">Crear Cuenta de Cliente</h2>
         <p style="margin-bottom: 1.5rem; font-size: 0.85rem; color: #94a3b8;">Registra tus datos para hacer reservas y gestionar tu estadía.</p>
@@ -247,7 +247,7 @@ import { Capacitor } from '@capacitor/core';
     </div>
 
     <!-- MODAL 2: INICIO DE SESIÓN DE HUÉSPED (Email + Contraseña) -->
-    <div *ngIf="showEmailLoginModal" style="position: absolute; inset:0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+    <div *ngIf="showEmailLoginModal" style="position: fixed; inset:0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
       <div class="glass-panel" style="padding: 2.5rem; width: 400px;">
         <h2 style="margin-bottom: 0.25rem; color: #f59e0b;">Iniciar Sesión</h2>
         <p style="margin-bottom: 1.5rem; font-size: 0.85rem; color: #94a3b8;">Ingresa con tu correo y contraseña.</p>
@@ -274,7 +274,7 @@ import { Capacitor } from '@capacitor/core';
     </div>
 
     <!-- MODAL 3: INGRESO CON PIN DE RESERVA (ROOM SERVICE) -->
-    <div *ngIf="showGuestLogin" style="position: absolute; inset:0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+    <div *ngIf="showGuestLogin" style="position: fixed; inset:0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
       <div class="glass-panel" style="padding: 2.5rem; width: 400px; text-align: center;">
         <h2 style="margin-bottom: 0.5rem; color: #f59e0b;">Acceso Room Service</h2>
         <p style="margin-bottom: 1.5rem; font-size: 0.85rem; color: #94a3b8;">Ingresa con tu Documento y PIN asignado en Recepción</p>
@@ -290,7 +290,7 @@ import { Capacitor } from '@capacitor/core';
     </div>
 
     <!-- MODAL 4: LOGIN STAFF -->
-    <div *ngIf="showStaffLogin" style="position: absolute; inset:0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center;">
+    <div *ngIf="showStaffLogin" style="position: fixed; inset:0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center;">
       <div class="glass-panel" style="padding: 2rem; width: 350px; text-align: center;">
         <h3 style="margin-bottom: 1.5rem;">Acceso Empleados</h3>
         <input type="password" [(ngModel)]="staffPin" placeholder="PIN" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; text-align: center; letter-spacing: 10px; font-size: 1.5rem; border-radius: 6px;">
