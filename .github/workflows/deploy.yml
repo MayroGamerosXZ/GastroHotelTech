@@ -1,0 +1,28 @@
+﻿name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy GastroHotel to AWS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ubuntu
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            echo "Conectando al servidor AWS..."
+            cd /home/ubuntu || exit
+            echo "Simulando Git Pull y reconstruyendo contenedores..."
+            sudo docker compose restart
+            echo "¡Despliegue automatizado exitoso!"

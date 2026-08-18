@@ -1,0 +1,833 @@
+<app-guest-portal *ngIf="currentView === 'guest-portal'" (staffLoggedIn)="onStaffLoggedIn($event)" (openSettings)="showSettingsModal = true"></app-guest-portal>
+
+<div class="app-layout animate-fade-in" *ngIf="currentView !== 'guest-portal'">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="flex items-center gap-4" style="margin-bottom: 2.5rem; padding-left: 0.5rem;">
+      <div style="width: 44px; height: 44px; border-radius: 8px; border: 2px solid var(--accent-primary); background: transparent; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-weight: bold; font-size: 1.5rem; color: var(--accent-primary);">GH</div>
+      <div>
+        <h3 style="margin-bottom: 0; font-size: 1.125rem; letter-spacing: 1px;">GastroHotel</h3>
+        <p style="margin-bottom: 0; font-size: 0.75rem; color: var(--accent-primary); font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ currentUser?.rol || 'Staff' }}</p>
+      </div>
+    </div>
+    
+    <nav class="flex-col">
+      <a *ngIf="currentUser?.rol !== 'Mesero'" class="menu-item" [class.active]="currentView === 'reception'" (click)="changeView('reception')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+        Recepción
+      </a>
+      <a *ngIf="currentUser?.rol !== 'Mesero'" class="menu-item" [class.active]="currentView === 'reservas'" (click)="changeView('reservas')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+        Reservas
+      </a>
+      <a *ngIf="currentUser?.rol !== 'Recepcion'" class="menu-item" [class.active]="currentView === 'pos'" (click)="changeView('pos')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+        POS Restaurante
+      </a>
+      <a *ngIf="currentUser?.rol !== 'Mesero'" class="menu-item" [class.active]="currentView === 'huespedes'" (click)="changeView('huespedes')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+        Huéspedes
+      </a>
+      <a *ngIf="currentUser?.rol === 'Admin'" class="menu-item" [class.active]="currentView === 'staff'" (click)="changeView('staff')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2" /></svg>
+        Staff
+      </a>
+      <a *ngIf="currentUser?.rol === 'Admin'" class="menu-item" [class.active]="currentView === 'reportes'" (click)="changeView('reportes')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+        Reportes
+      </a>
+      <a *ngIf="currentUser?.rol === 'Admin'" class="menu-item" [class.active]="currentView === 'inventario'" (click)="changeView('inventario')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+        Inventario & Recetas
+      </a>
+    </nav>
+    
+    <div style="margin-top: auto;">
+      <!-- Caja Actual -->
+      <div class="glass-panel" style="margin-top: 1.5rem; text-align: center;" *ngIf="reporte">
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Caja Actual (Pagos)</p>
+        <h2 style="margin: 0; color: #10b981;">Q. {{ reporte.caja_real | number:'1.2-2' }}</h2>
+        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem;">Ingreso real registrado</p>
+      </div>
+      
+      <a class="menu-item" (click)="showSettingsModal = true" style="color: var(--text-secondary); justify-content: center; background: rgba(255,255,255,0.05); margin-bottom: 0.5rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Configurar Red
+      </a>
+
+      <a class="menu-item" (click)="changeView('guest-portal')" style="color: var(--danger); justify-content: center; background: rgba(239, 68, 68, 0.1);">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+        Cerrar Sesión
+      </a>
+    </div>
+  </aside>
+  <!-- Main Content -->
+  <main class="main-content" *ngIf="currentView === 'reception'">
+    <header class="flex justify-between items-center mobile-header-stack" style="margin-bottom: 2.5rem;">
+      <div>
+        <h1>Dashboard Front Desk</h1>
+        <p>Resumen de ocupación y operaciones del día.</p>
+      </div>
+      <div class="flex gap-4">
+        <button class="btn btn-secondary flex" style="gap: 0.5rem; align-items: center;" (click)="showBuscarFolioModal = true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          Buscar Folio
+        </button>
+        <button class="btn btn-primary" (click)="showNuevaReservaModal = true">+ Nueva Reserva</button>
+      </div>
+    </header>
+
+    <!-- Kpis -->
+    <div class="kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+      <div class="glass-card flex-col justify-between">
+        <p style="font-weight: 500; color: var(--text-muted); font-size: 0.875rem;">Habitaciones Libres</p>
+        <div class="flex justify-between items-center" style="margin-top: 1rem;">
+          <h2 style="font-size: 2.5rem; margin: 0;">{{ roomsStatus.available }}</h2>
+          <span style="font-size: 0.875rem; color: var(--text-secondary);">de {{ roomsStatus.total }}</span>
+        </div>
+      </div>
+
+      <div class="glass-card flex-col justify-between">
+        <h3 style="font-size: 0.875rem; color: var(--text-muted); font-weight: 500; margin-bottom: 1rem;">Ocupación Total</h3>
+        <div style="display: flex; align-items: baseline; justify-content: space-between;">
+          <span style="font-size: 2.5rem; font-weight: 600;">{{ roomsStatus.total > 0 ? ((roomsStatus.occupied / roomsStatus.total) * 100 | number:'1.0-0') : 0 }}%</span>
+          <span class="badge" [ngClass]="roomsStatus.occupied > 0 ? 'badge-success' : 'badge-warning'">ÓPTIMO</span>
+        </div>
+      </div>
+
+      <div class="glass-card flex-col justify-between">
+        <p style="font-weight: 500; color: var(--text-muted); font-size: 0.875rem;">Limpieza Pendiente</p>
+        <div class="flex justify-between items-center" style="margin-top: 1rem;">
+          <h2 style="font-size: 2.5rem; margin: 0;">{{ roomsStatus.cleaning }}</h2>
+          <div class="badge badge-warning">Atención</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Tables / Lists -->
+    <div class="glass-panel" style="padding: 1.5rem;">
+      <div class="flex justify-between items-center" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+        <h3 style="margin: 0;">Movimientos Recientes</h3>
+        <button class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">Ver Todos</button>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr>
+              <th style="padding: 1rem 0.5rem; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);">Reserva ID</th>
+              <th style="padding: 1rem 0.5rem; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);">Huésped</th>
+              <th style="padding: 1rem 0.5rem; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);">Habitación</th>
+              <th style="padding: 1rem 0.5rem; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);">Estado</th>
+              <th style="padding: 1rem 0.5rem; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);">Hora</th>
+              <th style="padding: 1rem 0.5rem; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let checkin of recentCheckins" style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+              <td style="padding: 1rem 0.5rem; font-family: monospace; color: var(--accent-secondary);">{{ checkin.id }}</td>
+              <td style="padding: 1rem 0.5rem; font-weight: 500;">{{ checkin.name }}</td>
+              <td style="padding: 1rem 0.5rem;">#{{ checkin.room }}</td>
+              <td style="padding: 1rem 0.5rem;">
+                <span class="badge" 
+                      [ngClass]="{'badge-success': checkin.status === 'Check-in', 
+                                  'badge-warning': checkin.status === 'Pendiente', 
+                                  'badge-danger': checkin.status === 'Check-out'}">
+                  {{ checkin.status }}
+                </span>
+              </td>
+              <td style="padding: 1rem 0.5rem; color: var(--text-secondary);">{{ checkin.time }}</td>
+              <td style="padding: 1rem 0.5rem;">
+                <button class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">Gestionar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- RACK DE HABITACIONES -->
+    <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 2.5rem;">
+      <h3 style="margin-bottom: 1.5rem;">Rack de Habitaciones (Pisos 1 - 4)</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.75rem;">
+        <div *ngFor="let hab of rackHabitaciones" 
+             (click)="openRoomModal(hab)"
+             style="padding: 1rem 0; text-align: center; border-radius: 4px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); font-weight: 600; font-size: 1.1rem; transition: transform 0.2s;"
+             [style.background]="hab.estado_ocupacion === 'Ocupada' ? 'rgba(239, 68, 68, 0.2)' : (hab.estado_ocupacion === 'Reservada' ? 'rgba(59, 130, 246, 0.2)' : (hab.estado_limpieza !== 'Limpia' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)'))"
+             [style.color]="hab.estado_ocupacion === 'Ocupada' ? '#fca5a5' : (hab.estado_ocupacion === 'Reservada' ? '#93c5fd' : (hab.estado_limpieza !== 'Limpia' ? '#fcd34d' : '#6ee7b7'))"
+             onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          {{hab.id_habitacion}}
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <main class="main-content" *ngIf="currentView === 'reservas'">
+    <header style="margin-bottom: 2.5rem;">
+      <h1>Gestión de Reservas</h1>
+      <p>Listado de reservas registradas en el sistema.</p>
+    </header>
+    <div class="glass-panel" style="padding: 1.5rem;">
+      <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+          <tr>
+            <th style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">ID Reserva</th>
+            <th style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">Huésped ID</th>
+            <th style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">Habitación</th>
+            <th style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">Check-in</th>
+            <th style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">Check-out</th>
+            <th style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let res of reservas" style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 1rem;">RES-{{ res.id_reserva }}</td>
+            <td style="padding: 1rem;">{{ res.id_huesped }}</td>
+            <td style="padding: 1rem;">#{{ res.id_habitacion }}</td>
+            <td style="padding: 1rem;">{{ res.fecha_checkin }}</td>
+            <td style="padding: 1rem;">{{ res.fecha_checkout }}</td>
+            <td style="padding: 1rem;"><span class="badge badge-success">{{ res.estado }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <app-pos *ngIf="currentView === 'pos'" style="flex: 1; display: flex; overflow: hidden;"></app-pos>
+
+  <!-- ════════════ VISTA: HUÉSPEDES CRM ════════════ -->
+  <main class="main-content" *ngIf="currentView === 'huespedes'">
+    <header style="margin-bottom: 2.5rem;">
+      <h1>CRM Huéspedes</h1>
+      <p>Historial de visitas, preferencias y alergias de los huéspedes registrados.</p>
+    </header>
+    <div class="glass-panel" style="padding: 1.5rem;">
+      <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+          <tr>
+            <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">ID</th>
+            <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">Nombre Completo</th>
+            <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">Documento</th>
+            <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">Visitas</th>
+            <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">Alergias/Pref.</th>
+            <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let h of huespedes" style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 0.75rem 1rem; color: var(--accent-secondary); font-family: monospace;">H-{{ h.id_huesped }}</td>
+            <td style="padding: 0.75rem 1rem; font-weight: 500;">{{ h.nombres_completos }}</td>
+            <td style="padding: 0.75rem 1rem; font-family: monospace;">{{ h.doc_identidad }}</td>
+            <td style="padding: 0.75rem 1rem; text-align: center;">
+              <span class="badge badge-success">{{ h.total_visitas }}</span>
+            </td>
+            <td style="padding: 0.75rem 1rem; color: var(--text-muted);">{{ h.preferencias_alergias || 'Sin registrar' }}</td>
+            <td style="padding: 0.75rem 1rem;">
+              <button class="btn btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" (click)="selectedHuesped = h">Ver Historial</button>
+            </td>
+          </tr>
+          <tr *ngIf="huespedes.length === 0">
+            <td colspan="6" style="padding: 2rem; text-align: center; color: var(--text-muted);">No hay huéspedes registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal Historial Huésped -->
+    <div *ngIf="selectedHuesped" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+      <div class="glass-panel" style="padding: 2rem; width: 560px; max-height: 80vh; overflow-y: auto;">
+        <h2 style="margin-bottom: 0.25rem;">{{ selectedHuesped.nombres_completos }}</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Doc: {{ selectedHuesped.doc_identidad }} | Visitas: {{ selectedHuesped.total_visitas }}</p>
+
+        <h4 style="margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">Historial de Reservas</h4>
+        <table style="width: 100%; font-size: 0.875rem;">
+          <thead><tr>
+            <th style="padding: 0.5rem; text-align: left; color: var(--text-muted);">Reserva</th>
+            <th style="padding: 0.5rem; text-align: left; color: var(--text-muted);">Hab.</th>
+            <th style="padding: 0.5rem; text-align: left; color: var(--text-muted);">Check-in</th>
+            <th style="padding: 0.5rem; text-align: left; color: var(--text-muted);">Check-out</th>
+            <th style="padding: 0.5rem; text-align: left; color: var(--text-muted);">Estado</th>
+          </tr></thead>
+          <tbody>
+            <tr *ngFor="let r of selectedHuesped.reservas" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: 0.5rem; font-family: monospace; color: var(--accent-secondary);">RES-{{ r.id_reserva }}</td>
+              <td style="padding: 0.5rem;">#{{ r.id_habitacion }}</td>
+              <td style="padding: 0.5rem;">{{ r.fecha_checkin }}</td>
+              <td style="padding: 0.5rem;">{{ r.fecha_checkout }}</td>
+              <td style="padding: 0.5rem;"><span class="badge badge-success">{{ r.estado }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-secondary" style="width: 100%; margin-top: 1.5rem;" (click)="selectedHuesped = null">Cerrar</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ════════════ VISTA: STAFF CRUD ════════════ -->
+  <main class="main-content" *ngIf="currentView === 'staff'">
+    <header class="flex justify-between items-center" style="margin-bottom: 2.5rem;">
+      <div><h1>Gestión de Staff</h1><p>Administra el personal del hotel y restaurante.</p></div>
+      <button class="btn btn-primary" (click)="abrirModalStaff()">+ Nuevo Empleado</button>
+    </header>
+    <div class="glass-panel" style="padding: 1.5rem;">
+      <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead><tr>
+          <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">ID</th>
+          <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">Nombre</th>
+          <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">Rol</th>
+          <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">PIN</th>
+          <th style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">Acciones</th>
+        </tr></thead>
+        <tbody>
+          <tr *ngFor="let emp of staffList" style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 0.75rem 1rem; color: var(--accent-secondary); font-family: monospace;">{{ emp.id }}</td>
+            <td style="padding: 0.75rem 1rem; font-weight: 500;">{{ emp.nombre }}</td>
+            <td style="padding: 0.75rem 1rem;">
+              <span class="badge" [ngClass]="{'badge-success': emp.rol === 'Admin', 'badge-warning': emp.rol === 'Recepcion', 'badge-danger': emp.rol === 'Mesero'}">{{ emp.rol }}</span>
+            </td>
+            <td style="padding: 0.75rem 1rem; font-family: monospace; letter-spacing: 2px;">{{ emp.pin }}</td>
+            <td style="padding: 0.75rem 1rem;">
+              <div class="flex gap-2">
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" (click)="abrirModalStaff(emp)">Editar</button>
+                <button class="btn" style="padding: 0.3rem 0.75rem; font-size: 0.75rem; background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3);" (click)="eliminarStaff(emp.id)">Eliminar</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal Staff -->
+    <div *ngIf="showStaffModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+      <div class="glass-panel" style="padding: 2rem; width: 420px;">
+        <h2 style="margin-bottom: 1.5rem;">{{ editandoStaff ? 'Editar Empleado' : 'Nuevo Empleado' }}</h2>
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem;">Nombre Completo</label>
+          <input type="text" [(ngModel)]="nuevoStaff.nombre" style="width: 100%; padding: 0.65rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px;">
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem;">Rol</label>
+          <select [(ngModel)]="nuevoStaff.rol" style="width: 100%; padding: 0.65rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px;">
+            <option value="Mesero">Mesero</option>
+            <option value="Recepcion">Recepción</option>
+            <option value="Admin">Admin / Gerente</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem;">PIN de Acceso (4 dígitos)</label>
+          <input type="text" [(ngModel)]="nuevoStaff.pin" maxlength="6" style="width: 100%; padding: 0.65rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px; letter-spacing: 4px; font-size: 1.1rem;">
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary" style="flex: 1;" (click)="showStaffModal = false">Cancelar</button>
+          <button class="btn btn-primary" style="flex: 1;" (click)="guardarStaff()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ════════════ VISTA: REPORTES / CIERRE DE CAJA ════════════ -->
+  <main class="main-content" *ngIf="currentView === 'reportes'">
+    <header class="flex justify-between items-center" style="margin-bottom: 2.5rem;">
+      <div><h1>Reportes y Cierre de Caja</h1><p>Resumen operativo del día: {{ reporte?.fecha || 'Cargando...' }}</p></div>
+      <div class="flex gap-4">
+        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white;" (click)="exportarTXT()">📄 TXT (Auditoría)</button>
+        <button class="btn btn-secondary" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white;" (click)="exportarPDF()">🖨️ PDF / Imprimir</button>
+        <button class="btn btn-primary" style="background: linear-gradient(135deg, #10b981, #047857); border: none;" (click)="cerrarTurno()" [disabled]="cierreRegistrado">
+          {{ cierreRegistrado ? '✅ Turno Cerrado' : '🔒 Cerrar Turno' }}
+        </button>
+      </div>
+    </header>
+
+    <div *ngIf="reporte" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+      <div class="glass-card flex-col justify-between">
+        <p style="font-weight: 500; color: var(--text-muted); font-size: 0.875rem;">Ingresos Restaurante</p>
+        <div class="flex justify-between items-center" style="margin-top: 1rem;">
+          <h2 style="font-size: 2rem; margin: 0; color: #6ee7b7;">Q. {{ reporte.total_restaurante | number:'1.2-2' }}</h2>
+          <span style="font-size: 1.5rem;">🍽️</span>
+        </div>
+      </div>
+      <div class="glass-card flex-col justify-between">
+        <p style="font-weight: 500; color: var(--text-muted); font-size: 0.875rem;">Ingresos Hospedaje</p>
+        <div class="flex justify-between items-center" style="margin-top: 1rem;">
+          <h2 style="font-size: 2rem; margin: 0; color: #93c5fd;">Q. {{ reporte.total_hospedaje | number:'1.2-2' }}</h2>
+          <span style="font-size: 1.5rem;">🏨</span>
+        </div>
+      </div>
+      <div class="glass-card flex-col justify-between">
+        <p style="font-weight: 500; color: var(--text-muted); font-size: 0.875rem;">TOTAL GENERAL</p>
+        <div class="flex justify-between items-center" style="margin-top: 1rem;">
+          <h2 style="font-size: 2rem; margin: 0; color: var(--accent-primary);">Q. {{ reporte.total_general | number:'1.2-2' }}</h2>
+          <span style="font-size: 1.5rem;">💰</span>
+        </div>
+      </div>
+      <div class="glass-card flex-col justify-between">
+        <p style="font-weight: 500; color: var(--text-muted); font-size: 0.875rem;">Ocupación Hotel</p>
+        <div class="flex justify-between items-center" style="margin-top: 1rem;">
+          <h2 style="font-size: 2rem; margin: 0;">{{ reporte.porcentaje_ocupacion }}%</h2>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">{{ reporte.habitaciones_ocupadas }} / {{ reporte.habitaciones_total }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-panel" style="padding: 1.5rem;">
+      <h3 style="margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">Comandas del Día</h3>
+      <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead><tr>
+          <th style="padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--text-muted);"># Comanda</th>
+          <th style="padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--text-muted);">Mesa</th>
+          <th style="padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--text-muted);">Estado</th>
+          <th style="padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); text-align: right;">Total</th>
+        </tr></thead>
+        <tbody>
+          <tr *ngFor="let c of reporte.comandas" style="border-bottom: 1px solid rgba(255,255,255,0.05);" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 0.75rem; font-family: monospace; color: var(--accent-secondary);">#{{ c.id_comanda }}</td>
+            <td style="padding: 0.75rem;">Mesa {{ c.num_mesa }}</td>
+            <td style="padding: 0.75rem;"><span class="badge badge-warning">{{ c.estado }}</span></td>
+            <td style="padding: 0.75rem; text-align: right; font-weight: 600;">Q. {{ c.total | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="reporte.comandas.length === 0">
+            <td colspan="4" style="padding: 2rem; text-align: center; color: var(--text-muted);">Sin comandas hoy.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- MODAL BUSCAR FOLIO -->
+  <div *ngIf="showBuscarFolioModal" style="position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-panel" style="padding: 2.5rem; width: 450px;">
+      <h2 style="margin-bottom: 1.5rem;">Buscar Folio</h2>
+      <input type="text" [(ngModel)]="busquedaFolioId" placeholder="ID de Reserva (Ej. 12)" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); color: white;">
+      <div *ngIf="busquedaResultado" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem;">
+        <p><strong>Huésped:</strong> Huésped ID {{busquedaResultado.id_huesped}}</p>
+        <p><strong>Habitación:</strong> {{busquedaResultado.id_habitacion}}</p>
+        <p><strong>Check-In:</strong> {{busquedaResultado.fecha_checkin}}</p>
+        <p><strong>Estado:</strong> {{busquedaResultado.estado}}</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary" style="flex: 1;" (click)="closeModals()">Cerrar</button>
+        <button class="btn btn-primary" style="flex: 1;" (click)="buscarFolio()">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL NUEVA RESERVA -->
+  <div *ngIf="showNuevaReservaModal" style="position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-panel" style="padding: 2.5rem; width: 450px; text-align: center;">
+      <h2 style="margin-bottom: 1rem;">Nueva Reserva</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">Para hacer una reserva como Recepción, utiliza el Portal de Huéspedes e inicia sesión o reserva desde la vista principal.</p>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary" style="flex: 1;" (click)="closeModals()">Cancelar</button>
+        <button class="btn btn-primary" style="flex: 1;" (click)="changeView('guest-portal'); closeModals();">Ir al Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DETALLE DE HABITACION (RACK) -->
+  <div *ngIf="selectedRoom" style="position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-panel" style="padding: 2rem; width: 520px; max-height: 90vh; overflow-y: auto;">
+      <h2 style="margin-bottom: 0.5rem;">Habitación {{ selectedRoom.id_habitacion }}</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Tipo: {{ selectedRoom.tipo }} | Limpieza:
+        <span [style.color]="selectedRoom.estado_limpieza === 'Limpia' ? '#10b981' : '#f59e0b'">{{ selectedRoom.estado_limpieza }}</span>
+        | Estado: <span [style.color]="selectedRoom.estado_ocupacion === 'Ocupada' ? '#fca5a5' : (selectedRoom.estado_ocupacion === 'Reservada' ? '#93c5fd' : '#6ee7b7')">{{ selectedRoom.estado_ocupacion }}</span>
+      </p>
+
+      <div *ngIf="selectedRoom.estado_ocupacion === 'Libre'" style="text-align: center; padding: 2rem 0;">
+        <p style="color: var(--success); font-size: 1.25rem;">Esta habitación está libre.</p>
+      </div>
+
+      <div *ngIf="selectedRoom.estado_ocupacion === 'Ocupada' || selectedRoom.estado_ocupacion === 'Reservada'">
+        <div *ngIf="!selectedRoomDetail" style="text-align: center; padding: 1rem;">Cargando detalles del Folio...</div>
+        <div *ngIf="selectedRoomDetail">
+          <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+            <p style="margin: 0;"><strong>Huésped:</strong> {{ selectedRoomDetail.reserva.huesped }}</p>
+            <p style="margin: 0;"><strong>Estado Reserva:</strong> {{ selectedRoom.estado_ocupacion }}</p>
+            <p style="margin: 0;"><strong>Check-In:</strong> {{ selectedRoomDetail.reserva.checkin }}</p>
+            <p style="margin: 0;"><strong>Check-Out:</strong> {{ selectedRoomDetail.reserva.checkout }}</p>
+          </div>
+
+          <!-- Tabla de Comandas -->
+          <h4 style="margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">Cargos de Restaurante</h4>
+          <div style="max-height: 100px; overflow-y: auto; margin-bottom: 1rem;">
+            <table style="width: 100%; font-size: 0.85rem;">
+              <tr *ngFor="let c of selectedRoomDetail.folio.comandas">
+                <td>Comanda #{{ c.id_comanda }}</td>
+                <td style="text-align: right;">Q. {{ c.total | number:'1.2-2' }}</td>
+              </tr>
+              <tr *ngIf="selectedRoomDetail.folio.comandas.length === 0">
+                <td colspan="2" style="color: var(--text-muted); text-align: center;">Sin consumos de restaurante</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- Desglose Cuenta -->
+          <div style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--text-muted);">
+              <span>Hospedaje ({{ selectedRoomDetail.folio.noches }} noche(s) × Q.{{ selectedRoomDetail.folio.precio_por_noche | number:'1.2-2' }})</span>
+              <span>Q. {{ selectedRoomDetail.folio.saldo_hospedaje | number:'1.2-2' }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--text-muted);">
+              <span>Restaurante / Room Service</span>
+              <span>Q. {{ selectedRoomDetail.folio.saldo_restaurante | number:'1.2-2' }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.2rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 0.75rem; color: var(--accent-secondary);">
+              <span>TOTAL CUENTA:</span>
+              <span>Q. {{ selectedRoomDetail.folio.total_cuenta | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="flex gap-2" style="margin-top: 1.5rem; flex-wrap: wrap;">
+        <button class="btn btn-secondary" style="flex: 1;" (click)="closeModals()">Cerrar</button>
+        <button class="btn btn-secondary" style="flex: 1; border-color: #f59e0b; color: #f59e0b;" (click)="abrirEditarHabitacion(selectedRoom)">⚙️ Tarifas</button>
+        <button *ngIf="selectedRoom.estado_ocupacion === 'Ocupada' && selectedRoomDetail?.folio?.total_cuenta > 0"
+          class="btn btn-primary"
+          style="flex: 1; background: linear-gradient(135deg, #7c3aed, #5b21b6); border: none;"
+          (click)="abrirModalPago()">
+          💳 Registrar Pago
+        </button>
+        <button *ngIf="selectedRoom.estado_ocupacion === 'Reservada'" class="btn btn-primary"
+          style="flex: 1; background: #10b981; border: none;"
+          (click)="hacerCheckin()">✅ Check-in</button>
+        <button *ngIf="selectedRoom.estado_ocupacion === 'Ocupada'" class="btn btn-primary"
+          style="flex: 1; background: #ef4444; border: none;"
+          (click)="hacerCheckout()">🚪 Check-out</button>
+        <button *ngIf="selectedRoom.estado_limpieza !== 'Limpia'" class="btn btn-primary"
+          style="flex: 1; background: #f59e0b; border: none; color: #000;"
+          (click)="marcarLimpia()">🧹 Marcar Limpia</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PAGO -->
+  <div *ngIf="showPagoModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-panel" style="padding: 2.5rem; width: 440px;">
+      <h2 style="margin-bottom: 0.5rem;">💳 Registrar Pago</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">Habitación {{ selectedRoom?.id_habitacion }} — {{ selectedRoomDetail?.reserva?.huesped }}</p>
+
+      <!-- Total a pagar -->
+      <div style="background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4); padding: 1.25rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center;">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">TOTAL A COBRAR</p>
+        <h1 style="font-size: 2.5rem; color: #a78bfa; margin: 0;">Q. {{ montoPago | number:'1.2-2' }}</h1>
+      </div>
+
+      <!-- Sección de Facturación -->
+      <div style="margin-bottom: 1.5rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <h4 style="margin: 0 0 0.75rem 0; color: #60a5fa; font-size: 0.85rem;">Datos de Facturación</h4>
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">NIT</label>
+            <input type="text" [(ngModel)]="nitCliente"
+              style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-size: 0.9rem;">
+          </div>
+          <div style="flex: 2;">
+            <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Nombre</label>
+            <input type="text" [(ngModel)]="nombreCliente"
+              style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-size: 0.9rem;">
+          </div>
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Dirección (Opcional)</label>
+          <input type="text" [(ngModel)]="direccionCliente"
+            style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-size: 0.9rem;">
+        </div>
+      </div>
+
+      <!-- Método de pago -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Método de Pago</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
+          <button *ngFor="let m of ['Efectivo', 'Tarjeta', 'Transferencia']" 
+            [style.background]="metodoPago === m ? 'rgba(124,58,237,0.5)' : 'rgba(255,255,255,0.05)'"
+            [style.border]="metodoPago === m ? '2px solid #7c3aed' : '1px solid rgba(255,255,255,0.1)'"
+            style="padding: 0.75rem; border-radius: 8px; color: white; cursor: pointer; transition: all 0.2s; font-size: 0.85rem;"
+            (click)="metodoPago = m">
+            {{ m === 'Efectivo' ? '💵' : m === 'Tarjeta' ? '💳' : '🏦' }} {{ m }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Monto (editable por si el cliente paga parcial) -->
+      <div style="margin-bottom: 1.25rem;">
+        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.35rem;">Monto Recibido (Q.)</label>
+        <input type="number" [(ngModel)]="montoPago" step="0.01" 
+          style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-size: 1.2rem; text-align: right;">
+      </div>
+
+      <!-- Campos de Tarjeta -->
+      <div *ngIf="metodoPago === 'Tarjeta'" style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Número de Tarjeta</label>
+          <input type="text" [(ngModel)]="numeroTarjeta" placeholder="0000 0000 0000 0000" maxlength="19"
+            style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-size: 0.9rem;">
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Vencimiento</label>
+            <input type="text" [(ngModel)]="fechaVencimientoTarjeta" placeholder="MM/YY" maxlength="5"
+              style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-size: 0.9rem;">
+          </div>
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">CVV</label>
+            <input type="password" [(ngModel)]="cvvTarjeta" placeholder="***" maxlength="4"
+              style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-size: 0.9rem;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Campo de Transferencia -->
+      <div *ngIf="metodoPago === 'Transferencia'" style="margin-bottom: 1.5rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">No. de Documento / Referencia</label>
+        <input type="text" [(ngModel)]="docTransferencia" placeholder="Ej: 98234857"
+          style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-size: 0.9rem;">
+      </div>
+
+      <div class="flex gap-2">
+        <button class="btn btn-secondary" style="flex: 1;" (click)="showPagoModal = false">Cancelar</button>
+        <button class="btn btn-primary" style="flex: 1; background: linear-gradient(135deg, #7c3aed, #5b21b6); border: none; font-weight: 700;" (click)="confirmarPago()">✅ Confirmar Pago</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FACTURA GENERADA CON DESGLOSE -->
+  <div *ngIf="showFacturaModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10001; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-panel" style="padding: 2rem; width: 560px; max-height: 90vh; overflow-y: auto;">
+      <div style="text-align: center; margin-bottom: 1.25rem;">
+        <div style="font-size: 2.5rem; margin-bottom: 0.25rem;">🧾</div>
+        <h2 style="margin: 0; color: #10b981;">Pago Exitoso — Factura No. {{ facturaReciente?.id_factura }}</h2>
+        <span style="display: inline-block; background: #1e3a5f; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; margin-top: 6px; font-weight: 600;">
+          {{ facturaReciente?.tipo }}
+        </span>
+      </div>
+
+      <!-- Datos del Cliente -->
+      <div style="background: rgba(255,255,255,0.05); padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+          <span style="color: #e2e8f0;">Cliente: <strong>{{ facturaReciente?.nombre }}</strong></span>
+          <span style="color: #60a5fa;">NIT: <strong>{{ facturaReciente?.nit }}</strong></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8;">
+          <span>Dirección: {{ facturaReciente?.direccion || 'Ciudad' }}</span>
+          <span>Fecha: {{ facturaReciente?.fecha }}</span>
+        </div>
+      </div>
+
+      <!-- Tabla Desglosada en Modal -->
+      <div style="max-height: 220px; overflow-y: auto; margin-bottom: 1.25rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem;">
+          <thead style="background: rgba(30,58,95,0.9); position: sticky; top: 0;">
+            <tr>
+              <th style="padding: 6px 8px; color: white;">Código</th>
+              <th style="padding: 6px 8px; color: white;">Descripción</th>
+              <th style="padding: 6px 8px; color: white; text-align: center;">Cant.</th>
+              <th style="padding: 6px 8px; color: white; text-align: right;">P.Unit</th>
+              <th style="padding: 6px 8px; color: white; text-align: right;">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of facturaReciente?.items" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: 6px 8px; font-family: monospace; color: #f59e0b;">{{ item.codigo }}</td>
+              <td style="padding: 6px 8px;">{{ item.descripcion }}</td>
+              <td style="padding: 6px 8px; text-align: center;">{{ item.cantidad }}</td>
+              <td style="padding: 6px 8px; text-align: right;">Q.{{ item.precio_unitario | number:'1.2-2' }}</td>
+              <td style="padding: 6px 8px; text-align: right; font-weight: 600; color: #10b981;">Q.{{ item.subtotal | number:'1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="!facturaReciente?.items?.length">
+              <td colspan="5" style="padding: 1rem; text-align: center; color: var(--text-muted);">Sin detalles de artículos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem;">
+        <span style="font-weight: 600; font-size: 0.9rem;">TOTAL PAGADO:</span>
+        <span style="font-size: 1.4rem; font-weight: 800; color: #10b981;">Q. {{ facturaReciente?.total | number:'1.2-2' }}</span>
+      </div>
+
+      <div class="flex gap-2">
+        <button class="btn btn-secondary" style="flex: 1;" (click)="showFacturaModal = false">Cerrar</button>
+        <button class="btn btn-primary" style="flex: 2; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; font-weight: 700;" (click)="imprimirFactura()">
+          🖨️ Descargar Factura (PDF)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR CONFIGURACIÓN Y TARIFAS HABITACIÓN -->
+  <div *ngIf="showEditHabitacionModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10005; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-panel" style="padding: 2.5rem; width: 480px; max-height: 90vh; overflow-y: auto;">
+      <h2 style="margin-bottom: 0.25rem;">⚙️ Configurar Habitación {{ editingHabitacion?.id_habitacion }}</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Personaliza vistas, capacidad, tarifas y temporada alta.</p>
+
+      <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+        <div style="flex: 1;">
+          <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Precio Base (Q.)</label>
+          <input type="number" [(ngModel)]="editingHabitacion.precio_base" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+        </div>
+        <div style="flex: 1;">
+          <label style="display: block; font-size: 0.75rem; color: #f59e0b; margin-bottom: 0.25rem;">Precio Temp. Alta (Q.)</label>
+          <input type="number" [(ngModel)]="editingHabitacion.precio_temporada_alta" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid #f59e0b; color: white; border-radius: 6px;">
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+        <div style="flex: 1;">
+          <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Vista Panorámica</label>
+          <select [(ngModel)]="editingHabitacion.vista" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+            <option value="Volcán">🌅 Vista al Volcán</option>
+            <option value="Jardín">🌿 Vista al Jardín</option>
+            <option value="Piscina">🏊 Vista a la Piscina</option>
+            <option value="Ciudad">🏛️ Vista a la Ciudad</option>
+          </select>
+        </div>
+        <div style="flex: 1;">
+          <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Capacidad Máxima</label>
+          <input type="number" [(ngModel)]="editingHabitacion.capacidad" min="1" max="10" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Descripción Corta</label>
+        <textarea [(ngModel)]="editingHabitacion.descripcion" rows="2" style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;"></textarea>
+      </div>
+
+      <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <input type="checkbox" id="incDes" [(ngModel)]="editingHabitacion.incluye_desayuno" style="width: 18px; height: 18px;">
+        <label for="incDes" style="font-size: 0.85rem; color: white; cursor: pointer;">☕ Incluye Desayuno Buffet</label>
+      </div>
+
+      <div class="flex gap-2">
+        <button class="btn btn-secondary" style="flex: 1;" (click)="showEditHabitacionModal = false">Cancelar</button>
+        <button class="btn btn-primary" style="flex: 1; background: #10b981; border: none; font-weight: 700;" (click)="guardarHabitacionConfig()">💾 Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA INVENTARIO Y RECETAS -->
+  <main class="main-content" *ngIf="currentView === 'inventario'">
+    <header style="margin-bottom: 2.5rem;">
+      <h1>Inventario y Recetas</h1>
+      <p>Gestión de insumos en bodega y asignación de recetas estándar.</p>
+    </header>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+      <!-- Bodega de Insumos -->
+      <div class="glass-panel" style="padding: 1.5rem;">
+        <h3 style="margin-bottom: 1.5rem; color: #10b981;">📦 Bodega de Insumos</h3>
+        
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+          <input type="text" placeholder="Nombre (ej. Carne Res)" [(ngModel)]="nuevoInsumo.nombre" style="flex: 2; padding: 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+          <select [(ngModel)]="nuevoInsumo.unidad_medida" style="flex: 1; padding: 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+            <option value="Unidad">Unidad</option>
+            <option value="Gramos">Gramos (g)</option>
+            <option value="Litros">Litros (L)</option>
+          </select>
+          <input type="number" placeholder="Stock" [(ngModel)]="nuevoInsumo.stock_actual" style="flex: 1; padding: 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+          <button class="btn btn-primary" (click)="guardarInsumo()">Añadir</button>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+          <thead>
+            <tr>
+              <th style="padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);">ID</th>
+              <th style="padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);">Insumo</th>
+              <th style="padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);">Stock</th>
+              <th style="padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1);">Medida</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let inv of insumos" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: 0.75rem;">INS-{{ inv.id_insumo }}</td>
+              <td style="padding: 0.75rem;">{{ inv.nombre }}</td>
+              <td style="padding: 0.75rem;" [ngStyle]="{'color': inv.stock_actual <= inv.punto_reorden ? '#ef4444' : '#10b981'}">
+                <strong>{{ inv.stock_actual }}</strong> <span *ngIf="inv.stock_actual <= inv.punto_reorden" style="font-size: 0.7rem;">(Bajo)</span>
+              </td>
+              <td style="padding: 0.75rem;">{{ inv.unidad_medida }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Recetas Estándar -->
+      <div class="glass-panel" style="padding: 1.5rem;">
+        <h3 style="margin-bottom: 1.5rem; color: #f59e0b;">📖 Recetas Estándar</h3>
+        
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Seleccionar Artículo del Menú</label>
+          <select [ngModel]="selectedArticuloReceta" (ngModelChange)="seleccionarArticuloParaReceta($event)" style="width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+            <option [ngValue]="null">-- Seleccione --</option>
+            <option *ngFor="let a of articulosMenu" [ngValue]="a">{{ a.nombre }} ({{ a.categoria }})</option>
+          </select>
+        </div>
+
+        <div *ngIf="selectedArticuloReceta" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px;">
+          <h4 style="margin-top: 0; margin-bottom: 1rem;">Receta para: {{ selectedArticuloReceta.nombre }}</h4>
+          
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <select [(ngModel)]="nuevaRecetaInsumoId" style="flex: 2; padding: 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+              <option value="">-- Elegir Insumo --</option>
+              <option *ngFor="let inv of insumos" [value]="inv.id_insumo">{{ inv.nombre }} ({{ inv.unidad_medida }})</option>
+            </select>
+            <input type="number" placeholder="Cant." [(ngModel)]="nuevaRecetaCantidad" style="flex: 1; padding: 0.5rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px;">
+            <button class="btn btn-primary" style="padding: 0.5rem 1rem;" (click)="agregarReceta()">+</button>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+            <thead>
+              <tr style="color: var(--text-muted);">
+                <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1);">ID Insumo</th>
+                <th style="padding: 0.5rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1);">Cantidad</th>
+                <th style="padding: 0.5rem; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.1);">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of selectedArticuloReceta.recetas" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.5rem;">{{ rec.id_insumo }}</td>
+                <td style="padding: 0.5rem; text-align: center;">{{ rec.cantidad }}</td>
+                <td style="padding: 0.5rem; text-align: right;">
+                  <button class="btn btn-secondary" style="padding: 0.2rem 0.5rem; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border:none;" (click)="eliminarReceta(rec.id_receta)">Quitar</button>
+                </td>
+              </tr>
+              <tr *ngIf="!selectedArticuloReceta.recetas?.length">
+                <td colspan="3" style="padding: 1rem; text-align: center; color: var(--text-muted);">Sin receta configurada.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Configuración de Red (Para Ngrok/Túneles) -->
+<div *ngIf="showSettingsModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+  <div class="glass-panel" style="padding: 2.5rem; width: 450px;">
+    <h2 style="margin-bottom: 0.5rem; color: var(--accent-primary);">Configuración de Red Móvil</h2>
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Modifica esto si estás usando la app en tu celular vía Ngrok u otra red externa.</p>
+    
+    <div style="margin-bottom: 2rem;">
+      <label style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">URL de la API (Backend)</label>
+      <input type="text" [(ngModel)]="tempApiUrl" placeholder="https://api-hotel.ngrok.io" style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; font-family: monospace; font-size: 1rem;">
+    </div>
+    
+    <div class="flex gap-2">
+      <button class="btn btn-secondary" style="flex: 1;" (click)="showSettingsModal = false">Cancelar</button>
+      <button class="btn btn-primary" style="flex: 1;" (click)="guardarConfigRed()">Guardar y Recargar</button>
+    </div>
+  </div>
+</div>

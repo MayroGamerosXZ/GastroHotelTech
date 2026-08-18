@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gastrohotel_backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Credenciales de correo (Para SMTP)
+      - SMTP_EMAIL=tu_correo@gmail.com
+      - SMTP_PASSWORD=tu_app_password
+    volumes:
+      # Montaje persistente de la base de datos y la carpeta de subidas/imágenes si las hubiera
+      - db_data:/app/
+    restart: always
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gastrohotel_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  # Volumen administrado por Docker para persistencia de la base de datos SQLite
+  db_data:
