@@ -8,6 +8,10 @@
 
 Este repositorio es la entrega oficial para la **Tarea 02** del curso de **Análisis de Sistemas II**.
 
+> 🔗 **Acceso al Dashboard en Vivo (AWS):** [http://3.15.199.136](http://3.15.199.136)
+
+
+
 ---
 
 ## 👨‍🎓 Información del Estudiante
