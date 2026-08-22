@@ -1,3 +1,7 @@
+"""
+Definición de Modelos de Base de Datos (SQLAlchemy).
+Aquí se mapean las clases de Python a las tablas de la base de datos relacional.
+"""
 from sqlalchemy import Column, Integer, String, Float, Boolean, Date, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from database import Base

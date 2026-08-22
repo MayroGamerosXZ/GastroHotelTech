@@ -1,3 +1,7 @@
+/**
+ * Componente de Portal de Huéspedes.
+ * Controla la pantalla de bienvenida, registro de nuevos clientes y modales de inicio de sesión.
+ */
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

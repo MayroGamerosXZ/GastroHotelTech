@@ -1,3 +1,7 @@
+"""
+Esquemas de Validación (Pydantic).
+Se utiliza para validar y tipar fuertemente los datos de entrada (Payloads) y salida (Responses) de la API.
+"""
 from pydantic import BaseModel, ConfigDict
 from typing import Optional, List
 from datetime import date

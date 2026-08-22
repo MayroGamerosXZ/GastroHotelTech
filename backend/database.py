@@ -1,3 +1,7 @@
+"""
+Configuración de la conexión a la Base de Datos.
+Define el motor (Engine) y la sesión para ejecutar consultas SQL.
+"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker

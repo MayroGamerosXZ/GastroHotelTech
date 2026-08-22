@@ -1,3 +1,7 @@
+/**
+ * Componente Principal (Layout) de Angular.
+ * Controla el enrutamiento visual, el panel lateral (Sidebar) y el estado global de la sesión del usuario.
+ */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PosComponent } from './pos.component';

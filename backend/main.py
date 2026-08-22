@@ -1,3 +1,7 @@
+"""
+Archivo Principal (Entrypoint) de la API FastAPI.
+Contiene todos los endpoints (rutas) para el manejo de usuarios, comandas, habitaciones e inventario.
+"""
 from fastapi import FastAPI, Depends, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks
 from sqlalchemy.orm import Session
 import models, schemas

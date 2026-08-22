@@ -1,3 +1,7 @@
+/**
+ * Componente de Punto de Venta (POS).
+ * Maneja la lógica del restaurante, el carrito de compras (comanda), el cálculo de propinas y el envío a cocina.
+ */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

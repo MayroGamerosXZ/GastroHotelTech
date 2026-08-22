@@ -1,3 +1,7 @@
+/**
+ * Servicio de Conexión HTTP.
+ * Centraliza todas las llamadas a la API de FastAPI (GET, POST, PUT, DELETE) desde el frontend.
+ */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
