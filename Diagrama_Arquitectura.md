@@ -1,7 +1,3 @@
-# Arquitectura del Sistema - GastroHotel Tech
-
-El siguiente diagrama ilustra el flujo de datos, la infraestructura en AWS y el pipeline de despliegue continuo (CI/CD). GitHub soporta nativamente este formato, por lo que puedes verlo renderizado aquí mismo o copiar el código fuente en Miro.
-
 graph TD
     %% Definición de Estilos
     classDef client fill:#e0f2fe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
