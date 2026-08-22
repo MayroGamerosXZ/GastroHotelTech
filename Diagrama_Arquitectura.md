@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     %% Definición de Estilos
     classDef client fill:#e0f2fe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
@@ -59,5 +60,4 @@ graph TD
     Developer -->|Git Push| GitHub
     Actions -->|Conexión SSH y Docker Restart| Nginx
     
-    %% CORRECCIÓN: Se cambiaron los paréntesis por un guion medio
     UptimeRobot -->|Health Check - Ping HTTP| Nginx
