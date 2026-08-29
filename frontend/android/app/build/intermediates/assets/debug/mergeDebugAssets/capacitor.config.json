@@ -1,0 +1,13 @@
+{
+	"appId": "com.gastrohotel.app",
+	"appName": "GastroHotelTech",
+	"webDir": "dist/gastro-hotel/browser",
+	"server": {
+		"cleartext": true
+	},
+	"plugins": {
+		"CapacitorHttp": {
+			"enabled": true
+		}
+	}
+}

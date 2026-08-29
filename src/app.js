@@ -21,4 +21,4 @@ console.log(
 );
 
 console.log('=================================');
-console.log('Aplicación ejecutada correctamente');
+console.log('Aplicación ejecutada correctamente');// Comentario de prueba exitoso
