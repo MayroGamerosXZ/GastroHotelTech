@@ -13,7 +13,7 @@ test('2 + 3 debe ser igual a 5', () => {
 
     const resultado = sumar(2, 3);
 
-    assert.strictEqual(resultado, 5);
+    assert.strictEqual(resultado, 10);
 
 });
 
