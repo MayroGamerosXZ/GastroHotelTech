@@ -32,4 +32,4 @@ fs.cpSync(origen, destino, {
 
 console.log('====================================');
 console.log('BUILD COMPLETADO CORRECTAMENTE');
-console.log('====================================');
+console.log('====================================');esto_es_un_error_sintaxis; {{
