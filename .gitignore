@@ -1,8 +1,11 @@
 node_modules/
-.venv/
-__pycache__/
-*.pem
-.env
-.angular/
 dist/
-dist.zip
+.env
+
+*.log
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db

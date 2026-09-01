@@ -1,0 +1,18 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo "Hola desde Azure Pipelines"
+  displayName: 'Mensaje inicial'
+
+- script: node --version
+  displayName: 'Verificar Node'
+
+- script: npm --version
+  displayName: 'Verificar NPM'
+
+- script: echo "Pipeline terminado"
+  displayName: 'Finalizar'
