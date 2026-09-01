@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
   // Permite configurar la URL dinámicamente desde la interfaz (útil para Ngrok en la App Móvil)
-  private baseUrl = localStorage.getItem('API_URL') || 'http://3.15.199.136:8000';
+  private baseUrl = localStorage.getItem('API_URL') || 'http://18.224.71.130:8000';
 
   constructor(private http: HttpClient) { }
 
