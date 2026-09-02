@@ -108,7 +108,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome GastroHotel Tech API"}
+    return {"message": "Welcome to GastroHotel Tech API"}
 
 @app.get("/habitaciones/")
 def read_habitaciones(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
