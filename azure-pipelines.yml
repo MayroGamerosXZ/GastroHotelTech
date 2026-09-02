@@ -6,18 +6,20 @@ pool:
 
 steps:
 - checkout: self
-  displayName: 'Descargar codigo fuente'
+  displayName: 'Descargar codigo fuente de GastroHotel'
 
-- task: UseNode@1
+- task: UsePythonVersion@0
   inputs:
-    version: '20.x'
-  displayName: 'Configurar Node.js 20'
+    versionSpec: '3.10'
+  displayName: 'Configurar entorno Python'
 
-- script: npm ci
-  displayName: 'Instalar dependencias'
+- script: |
+    cd backend
+    pip install -r requirements.txt
+    pip install pytest httpx
+  displayName: 'Instalar librerias y dependencias del servidor'
 
-- script: npm run build
-  displayName: 'Compilar aplicacion'
-
-- script: npm test
-  displayName: 'Ejecutar pruebas automatizadas'
+- script: |
+    cd backend
+    pytest test_api.py
+  displayName: 'Ejecutar pruebas automatizadas de FastAPI'

@@ -7,7 +7,7 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # SQLite is used for this MVP/University project mock
-SQLALCHEMY_DATABASE_URL = "sqlite:///./gastrohotel.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./gastrohotel.db" 
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
