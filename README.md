@@ -10,7 +10,7 @@ Proyecto utilizado para practicar:
 - Testing automatizado
 - Microsoft Hosted Agents
 
-Mensaje de validacion Actionses
+Mensaje de validacion Actions
 
 ## Ejecutar
 
